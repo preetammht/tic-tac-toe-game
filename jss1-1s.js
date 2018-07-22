@@ -244,12 +244,6 @@ grid();
 var MoveR;
 var MoveC;
 
- 
-
- 
-// This function returns true if there are moves
-// remaining on the board. It returns false if
-// there are no moves left to play.
 function isMovesLeft()
 {
     for (var i = 0; i<3; i++)
@@ -258,12 +252,10 @@ function isMovesLeft()
                 return true;
     return false;
 }
- 
-// This is the evaluation function as discussed
-// in the previous article ( http://goo.gl/sJgv68 )
+
  function evaluate()
 {
-    // Checking for Rows for X or O victory.
+ 
     for (var row = 0; row<3; row++)
     {
         if (board[row][0]==board[row][1] &&
@@ -276,7 +268,6 @@ function isMovesLeft()
         }
     }
  
-    // Checking for Columns for X or O victory.
     for (var col = 0; col<3; col++)
     {
         if (board[0][col]==board[1][col] &&
@@ -290,7 +281,6 @@ function isMovesLeft()
         }
     }
  
-    // Checking for Diagonals for X or O victory.
     if (board[0][0]==board[1][1] && board[1][1]==board[2][2])
     {
         if (board[0][0]==opponent)
@@ -307,54 +297,40 @@ function isMovesLeft()
             return -10;
     }
  
-    // Else if none of them have won then return 0
+
     return 0;
 }
- 
-// This is the minimax function. It considers all
-// the possible ways the game can go and returns
-// the value of the board
 function minimax( board, depth, isMax)
 {
     var score = evaluate();
  
-    // If Maximizer has won the game return his/her
-    // evaluated score
     if (score == 10)
         return score;
  
-    // If Minimizer has won the game return his/her
-    // evaluated score
     if (score == -10)
         return score;
  
-    // If there are no more moves and no winner then
-    // it is a tie
     if (isMovesLeft()==false)
         return 0;
  
-    // If this maximizer's move
+   
     if (isMax)
     {
         var best = -1000;
  
-        // Traverse all cells
         for (var i = 0; i<3; i++)
         {
             for (var j = 0; j<3; j++)
             {
-                // Check if cell is empty
+   
                 if (board[i][j]=='_')
                 {
-                    // Make the move
                     board[i][j] = opponent;
  
-                    // Call minimax recursively and choose
-                    // the maximum value
                     best = Math.max( best,
                         minimax(board, depth+1, !isMax) );
  
-                    // Undo the move
+                    
                     board[i][j] = '_';
                 }
             }
@@ -362,28 +338,21 @@ function minimax( board, depth, isMax)
         return best;
     }
  
-    // If this minimizer's move
     else
     {
         var best = 1000;
  
-        // Traverse all cells
         for (var i = 0; i<3; i++)
         {
             for (var j = 0; j<3; j++)
             {
-                // Check if cell is empty
                 if (board[i][j]=='_')
                 {
-                    // Make the move
                     board[i][j] =player;
  
-                    // Call minimax recursively and choose
-                    // the minimum value
                     best = Math.min(best,
                            minimax(board, depth+1, !isMax));
  
-                    // Undo the move
                     board[i][j] = '_';
                 }
             }
@@ -392,36 +361,24 @@ function minimax( board, depth, isMax)
     }
 }
  
-// This will return the best possible move for the player
 function findBestMove()
 {
     var bestVal = -1000;
      bestMoveR=-1;
      bestMoveC = -1;
-     
-    // Traverse all cells, evalutae minimax function for
-    // all empty cells. And return the cell with optimal
-    // value.
+ 
     for (var i = 0; i<3; i++)
     {
         for (var j = 0; j<3; j++)
         {
-            // Check if celll is empty
             if (board[i][j]=='_')
             {
-                // Make the move
                 board[i][j] = opponent;
  
-                // compute evaluation function for this
-                // move.
                 var moveVal = minimax(board, 0, false);
  
-                // Undo the move
                 board[i][j] = '_';
  
-                // If the value of the current move is
-                // more than the best value, then update
-                // best/
                 if (moveVal > bestVal)
                 {
                     bestMoveR = i;
@@ -435,10 +392,8 @@ function findBestMove()
 bmr=bestMoveR;
 bmc=bestMoveC;
  
-   // return bestMove;
 }
- 
-// Driver code
+
 function man()
 {
    
@@ -465,8 +420,6 @@ function checkend()
                 return 4;
         }
     }
- 
-    // Checking for Columns for X or O victory.
     for (var col = 0; col<3; col++)
     {
         if (board[0][col]==board[1][col] &&
@@ -480,7 +433,6 @@ function checkend()
         }
     }
  
-    // Checking for Diagonals for X or O victory.
     if (board[0][0]==board[1][1] && board[1][1]==board[2][2])
     {
         if (board[0][0]==opponent)
